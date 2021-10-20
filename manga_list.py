@@ -1,4 +1,4 @@
-from Manga import Manga
+from manga import Manga
 
 
 class MangaList:
