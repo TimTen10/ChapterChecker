@@ -26,5 +26,11 @@ class Manga:
     def set_rating(self, value):
         self.rating = value
 
+    def update(self):
+        # Checks for updates (new chapters) of the manga
+        # Sends message: "New Chapter(s) Nr. X, Y, Z since last update."
+        # And updates the respective attribute(s)
+        pass
+
     def __str__(self):
         return f"Name: {self.name} ({self.url}), latest chapter: {self.latest_chapter} on {self.latest_update}"
