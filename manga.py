@@ -5,22 +5,24 @@ from typing import List
 class Manga:
 
     def __init__(self,
-                 name: str,
                  url: str,
-                 rating: int = None,
-                 genres: List[int] = None,
-                 provider: str = None,
-                 latest_chapter: int = None,
-                 latest_update: datetime = None,
-                 latest_check: datetime = None):
-        self.name = name
+                 name: str,
+                 authors: List[str],
+                 genres: List[int],
+                 latest_chapter: int,
+                 latest_chapter_url: str,
+                 latest_update: datetime,
+                 latest_check: datetime,):
         self.url = url
-        self.rating = rating
+        self.name = name
+        self.authors = authors
         self.genres = genres
-        self.provider = provider
         self.latest_chapter = latest_chapter
+        self.latest_chapter_url = latest_chapter_url
         self.latest_update = latest_update
         self.latest_check = latest_check
+
+        self.rating = -1
         self.need_check = True  # On creation a check for update is needed, then after every X amount of time interval.
 
     def set_rating(self, value):

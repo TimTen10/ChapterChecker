@@ -1,4 +1,5 @@
 from manga import Manga
+from utils import manga_parser
 
 
 class MangaList:
