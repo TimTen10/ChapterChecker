@@ -35,4 +35,4 @@ class Manga:
         pass
 
     def __str__(self):
-        return f"Name: {self.name} ({self.url}), latest chapter: {self.latest_chapter} on {self.latest_update}"
+        return f"Name: {self.name} ({self.url}), latest chapter: {self.latest_chapter} updated {self.latest_update}."
