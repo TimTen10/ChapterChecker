@@ -1,6 +1,3 @@
-import fileinput
-
-
 def clean_up_mangakakalot(manga_url):
     if 'chapter' in manga_url:
         provider, _, ending = manga_url.partition('/chapter/')

@@ -1,5 +1,5 @@
 from bs4 import BeautifulSoup
-from datetime import datetime
+from datetime import datetime, timedelta
 from manga import Manga
 
 import requests
@@ -11,12 +11,26 @@ def parse_mangakakalot(url) -> Manga:
     if r.status_code == 200:
         manga_html = BeautifulSoup(r.text, "html.parser")
 
+        # manga got a new url since last update:
+        # TODO: update url in source file
+        # TODO: might be able to not call function again and handle in some other way
+        if manga_html.body.string:
+            _, new_url = manga_html.body.string.strip().split(' : ')
+            if 'mangakakalot' in new_url:
+                return parse_mangakakalot(new_url)
+            else:
+                return parse_readmanganato(new_url)
+
         # Info about the latest chapter (latest_chapter_url, latest_update)
         chapter_list = manga_html.find("div", class_="chapter-list")
         latest_chapter_info = chapter_list.find("div", class_="row")
         chapter_info = latest_chapter_info.find("a")
         latest_chapter_url = chapter_info["href"]
-        latest_update = datetime.strptime(latest_chapter_info.contents[-2]["title"], "%b-%d-%Y %H:%M")
+        _, latest_chapter = latest_chapter_url.split('chapter_')
+        try:
+            latest_update = datetime.strptime(latest_chapter_info.contents[-2]["title"], "%b-%d-%Y %H:%M")
+        except ValueError:
+            latest_update = (datetime.now() - timedelta(days=1)).strftime("%b-%d-%Y %H:%M")
 
         # Info about the manga (name)
         info_text = manga_html.find("ul", class_="manga-info-text")
@@ -39,7 +53,7 @@ def parse_mangakakalot(url) -> Manga:
             name,
             authors,
             genres,
-            -1,  # TODO: Missing chapter number
+            latest_chapter,
             latest_chapter_url,
             latest_update,
             latest_check=datetime.now()
@@ -57,6 +71,7 @@ def parse_readmanganato(url) -> Manga:
         latest_chapter_info = chapter_list.find("li", class_="a-h")
         chapter_info = latest_chapter_info.find("a")
         latest_chapter_url = chapter_info["href"]
+        _, latest_chapter = latest_chapter_url.split('chapter-')
         latest_update = datetime.strptime(latest_chapter_info.contents[-2]["title"], "%b %d,%Y %H:%M")
 
         # Info about the manga (name)
@@ -82,7 +97,7 @@ def parse_readmanganato(url) -> Manga:
             name,
             authors,
             genres,
-            -1,  # TODO: Missing chapter number
+            latest_chapter,
             latest_chapter_url,
             latest_update,
             latest_check=datetime.now()
@@ -90,7 +105,8 @@ def parse_readmanganato(url) -> Manga:
 
 
 def main():
-    pass
+    print(parse_mangakakalot('https://mangakakalot.com/manga/pl922344'))
+    print(parse_readmanganato('https://readmanganato.com/manga-up953424'))
 
 
 if __name__ == '__main__':
