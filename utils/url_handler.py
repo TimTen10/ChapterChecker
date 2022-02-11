@@ -35,8 +35,7 @@ def clean_up_manga_list_file(manga_list_file):
             else:
                 raise ValueError(f'Provider not supported {manga_url}.')
 
-    with open(f'./mangalists/{manga_list_file}_clean.txt', mode='w') as manga_out:
-        manga_out.writelines(cleaned_manga_urls)
+    return cleaned_manga_urls
 
 
 if __name__ == '__main__':

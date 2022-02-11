@@ -12,10 +12,9 @@ def main(**kwargs):
         pass
 
     if kwargs['create_from']:
-        filename = kwargs['create_from'][1]
-        clean_up_manga_list_file(filename)
-        manga_list = MangaList(kwargs['create_from'][0], f'{filename}_clean.txt')
-        print(manga_list)
+        manga_list = MangaList(kwargs['create_from'][0],
+                               clean_up_manga_list_file(kwargs['create_from'][1]))
+        manga_list.save()
 
     if kwargs['add_manga']:
         pass

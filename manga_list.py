@@ -1,13 +1,15 @@
+import json
+
 from utils.manga_parser import parse_mangakakalot, parse_readmanganato
 
 
 class MangaList:
 
-    def __init__(self, name, *params):
+    def __init__(self, name, *params, **kwargs):
         # creates a new empty manga list
         self.name = name
         self.mangas = []
-        # **kwargs should be an option as -well
+        self.update_time = kwargs.get('update_time', 24)
         if len(params) == 1:
             self.add_manga_list(*params)
         elif len(params) > 1:
@@ -22,9 +24,8 @@ class MangaList:
             self.mangas.append(parse_readmanganato(url))
 
     def add_manga_list(self, url_list):
-        with open(f'./mangalists/{url_list}', mode='r') as input_file:
-            for manga_url in input_file.readlines():
-                self.add_manga_single(manga_url.strip())
+        for manga_url in url_list:
+            self.add_manga_single(manga_url.strip())
 
     def update_manga_single(self):
         pass
@@ -39,8 +40,11 @@ class MangaList:
         pass
 
     def save(self):
-        with open(f'./mangalists/{self.name}.csv', mode='w') as output_file:
-            pass
+        with open(f'./mangalists/{self.name}.json', mode='w', encoding='utf-8') as output_file:
+            json.dump({'Name': self.name,
+                       'Mangas': str(self.mangas),  # TODO: fix this to be a list of urls in the json file
+                       'Update Time (h)': self.update_time},
+                      output_file, ensure_ascii=False, indent=4)
 
     def __str__(self):
         return f'{self.name}\n' + '\n'.join(str(manga) for manga in self.mangas)
