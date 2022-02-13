@@ -1,15 +1,21 @@
 import json
 
+from datetime import datetime
 from utils.manga_parser import parse_mangakakalot, parse_readmanganato
 
 
 class MangaList:
 
-    def __init__(self, name, *params, **kwargs):
+    def __init__(self,
+                 name: str,
+                 *params,
+                 **kwargs):
         # creates a new empty manga list
         self.name = name
         self.mangas = []
         self.update_time = kwargs.get('update_time', 24)
+        self.last_update = datetime.now()
+
         if len(params) == 1:
             self.add_manga_list(*params)
         elif len(params) > 1:
@@ -42,8 +48,9 @@ class MangaList:
     def save(self):
         with open(f'./mangalists/{self.name}.json', mode='w', encoding='utf-8') as output_file:
             json.dump({'Name': self.name,
-                       'Mangas': str(self.mangas),  # TODO: fix this to be a list of urls in the json file
-                       'Update Time (h)': self.update_time},
+                       'Mangas': [manga.as_dict() for manga in self.mangas],
+                       'Update Time (h)': self.update_time,
+                       'Last Update (h)': self.last_update.strftime("%Y-%m-%d %H:%M:%S")},
                       output_file, ensure_ascii=False, indent=4)
 
     def __str__(self):

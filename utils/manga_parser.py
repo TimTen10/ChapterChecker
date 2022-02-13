@@ -5,6 +5,10 @@ from manga import Manga
 import requests
 
 
+def parse_manga(url):
+    return parse_mangakakalot(url) if 'mangakakalot' in url else parse_readmanganato(url)
+
+
 def parse_mangakakalot(url) -> Manga:
     r = requests.get(url)
 

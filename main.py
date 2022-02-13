@@ -2,7 +2,7 @@ import argparse
 
 from manga_list import MangaList
 
-from utils.manga_parser import parse_mangakakalot, parse_readmanganato
+from utils.manga_parser import parse_manga
 from utils.url_handler import clean_up_manga_list_file
 
 
