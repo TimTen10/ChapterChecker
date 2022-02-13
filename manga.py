@@ -1,5 +1,3 @@
-import json
-
 from datetime import datetime
 from typing import List, Dict
 
@@ -34,6 +32,7 @@ class Manga:
         # Checks for updates (new chapters) of the manga
         # Sends message: "New Chapter(s) Nr. X, Y, Z since last update."
         # And updates the respective attribute(s)
+        # TODO: Needs new functionality in manga_parser
         pass
 
     def as_dict(self) -> Dict:

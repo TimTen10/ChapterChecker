@@ -33,13 +33,13 @@ class MangaList:
         for manga_url in url_list:
             self.add_manga_single(manga_url.strip())
 
-    def update_manga_single(self):
-        pass
-
     def update_manga_list(self):
         # This should update every manga where the latest update > update interval
         # Might call update_manga_single inside
-        pass
+        for manga in self.mangas:
+            if (datetime.now() - manga.latest_check).seconds // 3600 > self.update_time:
+                manga.update()
+
 
     def sort_by(self):
         # Manga list should be sortable by latest release, rating, genres, etc.
@@ -55,3 +55,7 @@ class MangaList:
 
     def __str__(self):
         return f'{self.name}\n' + '\n'.join(str(manga) for manga in self.mangas)
+
+
+def load_manga_list(filename) -> MangaList:
+    pass

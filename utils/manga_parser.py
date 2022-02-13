@@ -16,7 +16,6 @@ def parse_mangakakalot(url) -> Manga:
         manga_html = BeautifulSoup(r.text, "html.parser")
 
         # manga got a new url since last update:
-        # TODO: update url in source file
         # TODO: might be able to not call function again and handle in some other way
         if manga_html.body.string:
             _, new_url = manga_html.body.string.strip().split(' : ')

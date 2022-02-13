@@ -37,13 +37,13 @@ if __name__ == "__main__":
 
     # argument for creating a manga list from file
     parser.add_argument('--create_from', '--create_manga_list_from', '-cf', nargs=2,
-                        help='manga urls filename followed by the name of the new manga list')
+                        help='name of the new manga list followed by manga urls filename')
 
     # argument for adding a single manga to a manga list
-    parser.add_argument('--add_manga', nargs=2, help='url of the manga you want added followed by manga list name')
+    parser.add_argument('--add_manga', nargs=2, help='manga list name followed by url of the manga you want to add')
 
     # argument for adding a list of manga to a manga list
-    parser.add_argument('--add_manga_list', nargs=2, help='manga urls filename followed by manga list name')
+    parser.add_argument('--add_manga_list', nargs=2, help='manga list name followed by manga urls filename')
 
     # argument for checking single manga for most recent update
     parser.add_argument('--check_single', help='url of manga that you want checked')
