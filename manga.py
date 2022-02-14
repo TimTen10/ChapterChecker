@@ -12,7 +12,7 @@ class Manga:
                  latest_chapter: int,
                  latest_chapter_url: str,
                  latest_update: datetime,
-                 latest_check: datetime,):
+                 latest_check: datetime):
         self.url = url
         self.name = name
         self.authors = authors
@@ -36,14 +36,14 @@ class Manga:
         pass
 
     def as_dict(self) -> Dict:
-        return {'URL': self.url,
-                'Name': self.name,
-                'Authors': self.authors,
-                'Genres': self.genres,
-                'Latest Chapter': self.latest_chapter,
-                'Latest Chapter URL': self.latest_chapter_url,
-                'Latest Update': self.latest_update.strftime("%Y-%m-%d %H:%M:%S"),
-                'Latest Check': self.latest_check.strftime("%Y-%m-%d %H:%M:%S")}
+        return {'url': self.url,
+                'name': self.name,
+                'authors': self.authors,
+                'genres': self.genres,
+                'latest_chapter': self.latest_chapter,
+                'latest_chapter_url': self.latest_chapter_url,
+                'latest_update': self.latest_update.strftime("%Y-%m-%d %H:%M:%S"),
+                'latest_check': self.latest_check.strftime("%Y-%m-%d %H:%M:%S")}
 
     def __str__(self):
         return f"Name: {self.name} ({self.url}), latest chapter: {self.latest_chapter} updated {self.latest_update}."

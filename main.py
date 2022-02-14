@@ -1,6 +1,6 @@
 import argparse
 
-from manga_list import MangaList
+from manga_list import MangaList, load_manga_list
 
 from utils.manga_parser import parse_manga
 from utils.url_handler import clean_up_manga_list_file
@@ -28,6 +28,9 @@ def main(**kwargs):
     if kwargs['check_list']:
         pass
 
+    if kwargs['load_list']:
+        print(load_manga_list(kwargs['load_list']))
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()  # TODO: (re-)add description
@@ -50,6 +53,9 @@ if __name__ == "__main__":
 
     # argument for checking a manga list for most recent updates
     parser.add_argument('--check_list', help='name of the manga list you want checked')
+
+    # TODO: only for testing purposes
+    parser.add_argument('--load_list')
 
     args = parser.parse_args()
 
