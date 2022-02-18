@@ -1,6 +1,8 @@
 from datetime import datetime
 from typing import List, Dict
 
+from utils.manga_parser import parse_manga_update
+
 
 class Manga:
 
@@ -8,8 +10,8 @@ class Manga:
                  url: str,
                  name: str,
                  authors: List[str],
-                 genres: List[int],
-                 latest_chapter: int,
+                 genres: List[str],
+                 latest_chapter: float,
                  latest_chapter_url: str,
                  latest_update: datetime,
                  latest_check: datetime):
@@ -23,17 +25,22 @@ class Manga:
         self.latest_check = latest_check
 
         self.rating = -1
-        self.need_check = True  # On creation a check for update is needed, then after every X amount of time interval.
 
     def set_rating(self, value):
         self.rating = value
 
-    def update(self) -> None:
+    def update(self, update_time) -> bool:
         # Checks for updates (new chapters) of the manga
-        # Sends message: "New Chapter(s) Nr. X, Y, Z since last update."
-        # And updates the respective attribute(s)
-        # TODO: Needs new functionality in manga_parser
-        pass
+        # And updates the respective attribute(s) -> latest_chapter(_url), latest_update, latest_check
+        if (datetime.now() - self.latest_check).seconds // 3600 > update_time:
+            new_chapter, new_chapter_url, new_update_time, new_check_time = parse_manga_update(self.url)
+            if new_chapter > self.latest_chapter:
+                self.latest_chapter = new_chapter
+                self.latest_chapter_url = new_chapter_url
+                self.latest_update = new_update_time
+                self.latest_check = new_check_time
+                return True
+        return False
 
     def as_dict(self) -> Dict:
         return {'url': self.url,

@@ -2,7 +2,6 @@ import argparse
 
 from manga_list import MangaList, load_manga_list
 
-from utils.manga_parser import parse_manga
 from utils.url_handler import clean_up_manga_list_file
 
 
@@ -23,9 +22,11 @@ def main(**kwargs):
         pass
 
     if kwargs['check_single']:
+        # Checks the manga (by url) for updates in the last "time" hours
         pass
 
     if kwargs['check_list']:
+        # Updates / Checks a whole manga list
         pass
 
     if kwargs['load_list']:

@@ -3,7 +3,7 @@ import json
 from datetime import datetime
 
 from manga import Manga
-from utils.manga_parser import parse_mangakakalot, parse_readmanganato
+from utils.manga_parser import parse_manga
 
 
 class MangaList:
@@ -25,11 +25,7 @@ class MangaList:
 
     def add_manga_single(self, url):
         # Takes in an URL and adds the corresponding manga to the manga list object.
-        if 'mangakakalot' in url:
-            self.mangas.append(parse_mangakakalot(url))
-        else:
-            # TODO: split needed? readmanganato and manganelo
-            self.mangas.append(parse_readmanganato(url))
+        self.mangas.append(Manga(*parse_manga(url)))
 
     def add_manga_list(self, url_list):
         for manga_url in url_list:
@@ -39,8 +35,10 @@ class MangaList:
         # This should update every manga where the latest update > update interval
         # Might call update_manga_single inside
         for manga in self.mangas:
-            if (datetime.now() - manga.latest_check).seconds // 3600 > self.update_time:
-                manga.update()
+            # if there is going to be an update_manga_single method in the future - replace from here:
+            if manga.update(self.update_time):
+                print(f'Chapter {manga.latest_chapter} for {manga.name} got released!'
+                      f' -> {manga.latest_chapter_url}')
 
     def sort_by(self):
         # Manga list should be sortable by latest release, rating, genres, etc.
