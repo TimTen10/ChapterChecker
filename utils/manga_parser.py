@@ -15,7 +15,6 @@ def _parse_mangakakalot(url):
         manga_html = BeautifulSoup(r.text, "html.parser")
 
         # manga got a new url since last update:
-        # TODO: might be able to not call function again and handle in some other way
         if manga_html.body.string:
             _, new_url = manga_html.body.string.strip().split(' : ')
             if 'mangakakalot' in new_url:
@@ -32,7 +31,7 @@ def _parse_mangakakalot(url):
         try:
             latest_update = datetime.strptime(latest_chapter_info.contents[-2]["title"], "%b-%d-%Y %H:%M")
         except ValueError:
-            latest_update = (datetime.now() - timedelta(days=1)).strftime("%b-%d-%Y %H:%M")
+            latest_update = datetime.now() - timedelta(days=1)
 
         # Info about the manga (name)
         info_text = manga_html.find("ul", class_="manga-info-text")
@@ -65,14 +64,17 @@ def _parse_readmanganato(url):
         chapter_info = latest_chapter_info.find("a")
         latest_chapter_url = chapter_info["href"]
         _, latest_chapter = latest_chapter_url.split('chapter-')
-        latest_update = datetime.strptime(latest_chapter_info.contents[-2]["title"], "%b %d,%Y %H:%M")
+        try:
+            latest_update = datetime.strptime(latest_chapter_info.contents[-2]["title"], "%b %d,%Y %H:%M")
+        except ValueError:
+            latest_update = datetime.now() - timedelta(days=1)
 
         # Info about the manga (name)
         info_text = manga_html.find("div", class_="story-info-right")
         name = info_text.find("h1").text
 
         # Info about the authors (authors)
-        first_author = info_text.tbody.tr.next_sibling.next_sibling.find("a")
+        first_author = info_text.find("a")
         authors = [first_author.text]
         additional_authors = first_author.find_next_siblings("a")
         if additional_authors:
@@ -80,10 +82,8 @@ def _parse_readmanganato(url):
                 authors.append(additional_author.text)
 
         # Info about the genres (genres)
-        genres_td_tag_list =\
-            info_text.tbody.tr.next_sibling.next_sibling.\
-            next_sibling.next_sibling.next_sibling.next_sibling.find_all("a")
-        genres = [tag.text for tag in genres_td_tag_list]
+        genres_a_tag_list = info_text.find_all("a")[len(authors):]
+        genres = [tag.text for tag in genres_a_tag_list]
 
         return url, name, authors, genres, latest_chapter, latest_chapter_url, latest_update, datetime.now()
 
@@ -133,7 +133,10 @@ def _parse_readmanganato_update(url) -> (int, str, datetime, datetime):
         chapter_info = latest_chapter_info.find("a")
         latest_chapter_url = chapter_info["href"]
         _, latest_chapter = latest_chapter_url.split('chapter-')
-        latest_update = datetime.strptime(latest_chapter_info.contents[-2]["title"], "%b %d,%Y %H:%M")
+        try:
+            latest_update = datetime.strptime(latest_chapter_info.contents[-2]["title"], "%b %d,%Y %H:%M")
+        except ValueError:
+            latest_update = (datetime.now() - timedelta(days=1)).strftime("%b %d %Y %H:%M")
 
         return latest_chapter, latest_chapter_url, latest_update, datetime.now()
 
