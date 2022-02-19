@@ -1,4 +1,5 @@
 import json
+import time
 
 from datetime import datetime
 
@@ -30,6 +31,7 @@ class MangaList:
     def add_manga_list(self, url_list):
         for manga_url in url_list:
             self.add_manga_single(manga_url.strip())
+            time.sleep(0.1)
 
     def update_manga_list(self):
         # This should update every manga where the latest update > update interval
