@@ -11,7 +11,7 @@ class MangaList:
 
     def __init__(self,
                  name: str,
-                 *params,
+                 *args,
                  **kwargs):
         # creates a new empty manga list
         self.name = name
@@ -19,9 +19,9 @@ class MangaList:
         self.update_time = kwargs.get('update_time', 24)
         self.last_update = kwargs.get('last_update', datetime.now())
 
-        if len(params) == 1:
-            self.add_manga_list(*params)
-        elif len(params) > 1:
+        if len(args) == 1:
+            self.add_manga_list(*args)
+        elif len(args) > 1:
             raise ValueError('Got too many attributes for creating a new MangaList object.')
 
     def add_manga_single(self, url):
@@ -35,12 +35,13 @@ class MangaList:
 
     def update_manga_list(self):
         # This should update every manga where the latest update > update interval
-        # Might call update_manga_single inside
+        # Might want to call update_manga_single inside
         for manga in self.mangas:
             # if there is going to be an update_manga_single method in the future - replace from here:
             if manga.update(self.update_time):
                 print(f'Chapter {manga.latest_chapter} for {manga.name} got released!'
                       f' -> {manga.latest_chapter_url}')
+            time.sleep(0.1)
 
     def sort_by(self):
         # Manga list should be sortable by latest release, rating, genres, etc.

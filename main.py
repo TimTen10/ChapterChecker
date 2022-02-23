@@ -6,9 +6,11 @@ from utils.url_handler import clean_up_manga_list_file
 
 
 def main(**kwargs):
+    # TODO: do not allow multiple arguments at once
     # create > add > check
     if kwargs['create_empty']:
-        pass
+        manga_list = MangaList(kwargs['create_empty'])
+        manga_list.save()
 
     if kwargs['create_from']:
         manga_list = MangaList(kwargs['create_from'][0],
@@ -16,10 +18,14 @@ def main(**kwargs):
         manga_list.save()
 
     if kwargs['add_manga']:
-        pass
+        manga_list = load_manga_list(kwargs['add_manga'][0])
+        manga_list.add_manga_single(kwargs['add_manga'][1])
+        manga_list.save()
 
     if kwargs['add_manga_list']:
-        pass
+        manga_list = load_manga_list(kwargs['add_manga_list'][0])
+        manga_list.add_manga_list(kwargs['add_manga_list'][1])
+        manga_list.save()
 
     if kwargs['check_single']:
         # Checks the manga (by url) for updates in the last "time" hours
@@ -27,7 +33,13 @@ def main(**kwargs):
 
     if kwargs['check_list']:
         # Updates / Checks a whole manga list
-        pass
+        manga_list = load_manga_list(kwargs['check_list'])
+        manga_list.update_manga_list()
+        manga_list.save()
+
+        # TODO: for testing purposes:
+        manga_list_test = load_manga_list(kwargs['check_list'])
+        manga_list_test.save()
 
     if kwargs['load_list']:
         print(load_manga_list(kwargs['load_list']))
@@ -50,7 +62,8 @@ if __name__ == "__main__":
     parser.add_argument('--add_manga_list', nargs=2, help='manga list name followed by manga urls filename')
 
     # argument for checking single manga for most recent update
-    parser.add_argument('--check_single', help='url of manga that you want checked')
+    parser.add_argument('--check_single', nargs=2,
+                        help='url of manga that you want checked followed by time window to check')
 
     # argument for checking a manga list for most recent updates
     parser.add_argument('--check_list', help='name of the manga list you want checked')
