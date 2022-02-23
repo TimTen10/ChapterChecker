@@ -116,7 +116,7 @@ def _parse_mangakakalot_update(url) -> (int, str, datetime, datetime):
         try:
             latest_update = datetime.strptime(latest_chapter_info.contents[-2]["title"], "%b-%d-%Y %H:%M")
         except ValueError:
-            latest_update = (datetime.now() - timedelta(days=1)).strftime("%b-%d-%Y %H:%M")
+            latest_update = datetime.now() - timedelta(days=1)
 
         return latest_chapter, latest_chapter_url, latest_update, datetime.now()
 
@@ -136,7 +136,7 @@ def _parse_readmanganato_update(url) -> (int, str, datetime, datetime):
         try:
             latest_update = datetime.strptime(latest_chapter_info.contents[-2]["title"], "%b %d,%Y %H:%M")
         except ValueError:
-            latest_update = (datetime.now() - timedelta(days=1)).strftime("%b %d %Y %H:%M")
+            latest_update = datetime.now() - timedelta(days=1)
 
         return latest_chapter, latest_chapter_url, latest_update, datetime.now()
 
