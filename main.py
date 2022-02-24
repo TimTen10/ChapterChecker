@@ -33,7 +33,7 @@ def handle_parser(**kwargs):
         # Checks the manga (by url) for updates in the last "time" hours
         chapter, url, latest_update, _ = parse_manga_update(kwargs['check_single'])
         print(f'Chapter {chapter} got released! -> {url}'
-              f'Date: {latest_update.strftime("%H:%M %d.%m.%Y ")}')
+              f' Date: {latest_update.strftime("%H:%M %d.%m.%Y ")}')
 
     if kwargs['check_list']:
         # Updates / Checks a whole manga list
