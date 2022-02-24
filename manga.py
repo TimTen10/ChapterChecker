@@ -29,19 +29,16 @@ class Manga:
     def set_rating(self, value):
         self.rating = value
 
-    def update(self, update_time) -> bool:
+    def update(self) -> bool:
         # Checks for updates (new chapters) of the manga
         # And updates the respective attribute(s) -> latest_chapter(_url), latest_update, latest_check
-        time_now = datetime.now()
-        time_elapsed = (time_now - self.latest_check).days * 24 + (time_now - self.latest_check).seconds // 3600
-        if time_elapsed > update_time:
-            new_chapter, new_chapter_url, new_update_time, new_check_time = parse_manga_update(self.url)
-            if new_chapter > self.latest_chapter:
-                self.latest_chapter = new_chapter
-                self.latest_chapter_url = new_chapter_url
-                self.latest_update = new_update_time
-                self.latest_check = new_check_time
-                return True
+        new_chapter, new_chapter_url, new_update_time, new_latest_check = parse_manga_update(self.url)
+        if new_chapter > self.latest_chapter:
+            self.latest_chapter = new_chapter
+            self.latest_chapter_url = new_chapter_url
+            self.latest_update = new_update_time
+            self.latest_check = new_latest_check
+            return True
         return False
 
     def as_dict(self) -> Dict:

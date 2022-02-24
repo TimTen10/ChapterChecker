@@ -16,7 +16,6 @@ class MangaList:
         # creates a new empty manga list
         self.name = name
         self.mangas = []
-        self.update_time = kwargs.get('update_time', 24)
         self.last_update = kwargs.get('last_update', datetime.now())
 
         if len(args) == 1:
@@ -38,7 +37,7 @@ class MangaList:
         # Might want to call update_manga_single inside
         for manga in self.mangas:
             # if there is going to be an update_manga_single method in the future - replace from here:
-            if manga.update(self.update_time):
+            if manga.update():
                 print(f'Chapter {manga.latest_chapter} for {manga.name} got released!'
                       f' -> {manga.latest_chapter_url}')
             time.sleep(0.1)
@@ -51,7 +50,6 @@ class MangaList:
         with open(f'./mangalists/{self.name}.json', mode='w', encoding='utf-8') as output_file:
             json.dump({'name': self.name,
                        'mangas': [manga.as_dict() for manga in self.mangas],
-                       'update_time': self.update_time,
                        'last_update': self.last_update.strftime("%Y-%m-%d %H:%M:%S")},
                       output_file, ensure_ascii=False, indent=4)
 
