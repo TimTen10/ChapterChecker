@@ -6,7 +6,6 @@ from utils.manga_parser import parse_manga_update
 from utils.url_handler import clean_up_manga_list_file
 
 
-
 def handle_parser(**kwargs):
     # TODO: do not allow multiple arguments at once
     # create > add > check
@@ -40,10 +39,6 @@ def handle_parser(**kwargs):
         manga_list = load_manga_list(kwargs['check_list'])
         manga_list.update_manga_list()
         manga_list.save()
-
-        # TODO: for testing purposes:
-        manga_list_test = load_manga_list(kwargs['check_list'])
-        manga_list_test.save()
 
     if kwargs['load_list']:
         print(load_manga_list(kwargs['load_list']))
